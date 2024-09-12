@@ -1,88 +1,35 @@
-// import React from 'react';
-// import './App.css';
-
-// function App() {
-//     return (
-//         <div className="App">
-//             <div>
-//                 <h3>What to learn</h3>
-//                 <div>
-//                     <input/>
-//                     <button>+</button>
-//                 </div>
-//                 <ul>
-//                     <li><input type="checkbox" checked={true}/> <span>HTML&CSS</span></li>
-//                     <li><input type="checkbox" checked={true}/> <span>JS</span></li>
-//                     <li><input type="checkbox" checked={false}/> <span>React</span></li>
-//                 </ul>
-//                 <div>
-//                     <button>All</button>
-//                     <button>Active</button>
-//                     <button>Completed</button>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default App;
-
-// ////////////////////////////////////////////////////
-
-// import React from 'react';
-// import './App.css';
-// import { Todolist } from './Todolist ';
-
-// const App = () => {
-//   return (
-//     <div className="App">
-//       {/* <div>
-//         <h3>What to learn</h3>
-//       </div>
-//       <div>
-//         <input />
-//         <button>+</button>
-//       </div>
-//       <ul>
-//         <li>
-//           <input type="checkbox" checked={true} />
-//           <span> HTML&CSS</span>
-//         </li>
-//         <li>
-//           <input type="checkbox" checked={true} />
-//           <span> JS</span>
-//         </li>
-//         <li>
-//           <input type="checkbox" checked={false} />
-//           <span> React</span>
-//         </li>
-//       </ul>
-//       <div>
-//         <button>All</button>
-//         <button>Active</button>
-//         <button>Completed</button>
-//       </div> */}
-//       <Todolist />
-//       <Todolist />
-//       <Todolist />
-//     </div>
-//   );
-// };
-
-// export default App;
-
-////////////////////////////////////////////////////
-
 import React from 'react';
 import './App.css';
 import { Todolist } from './Todolist ';
 
+export type TaskType = {
+  id: number;
+  title: string;
+  isDone: boolean;
+};
+
 function App() {
+  const tasks1: TaskType[] = [
+    { id: 1, title: 'HTML&CSS', isDone: true },
+    { id: 2, title: 'JS', isDone: true },
+    { id: 3, title: 'React', isDone: false },
+    { id: 4, title: 'Redux', isDone: false },
+    { id: 5, title: 'Typescript', isDone: false },
+    { id: 6, title: 'RTK query', isDone: false },
+  ];
+
+  const tasks2: TaskType[] = [
+    { id: 1, title: 'Hello world', isDone: true },
+    { id: 2, title: 'I am Happy', isDone: false },
+    { id: 3, title: 'Yo', isDone: false },
+    { id: 4, title: 'Redux', isDone: false },
+  ];
+  // const tasks2: TaskType[] = []; // если нет tasks то появиться надпись 'Тасок нет'
+
   return (
     <div className="App">
-      <Todolist title="What to learn" />
-      <Todolist title="Songs" />
-      <Todolist title="Books" />
+      <Todolist title="What to learn" tasks={tasks1} data="11.09.2024" />
+      <Todolist title="Songs" tasks={tasks2} />
     </div>
   );
 }
