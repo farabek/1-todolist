@@ -1,4 +1,4 @@
-.App {
+/* .App {
   padding: 30px;
   display: flex;
 }
@@ -22,6 +22,17 @@
 .is-done {
   opacity: 0.5;
 }
+.todolist-title-container {
+  display: flex;
+  align-items: center;
+} */
+
+/* /////////////////////////////////////////////// */
+
+.is-done {
+  opacity: 0.5;
+}
+
 .todolist-title-container {
   display: flex;
   align-items: center;
