@@ -1,59 +1,45 @@
-// import { Button } from './Button';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { Button } from './Button';
 
 type PropsType = {
   addItem: (title: string) => void;
 };
 
-export const AddItemForm = ({ addItem }: PropsType) => {
-  const [title, setTitle] = useState('');
+const AddItemForm = ({ addItem }: PropsType) => {
+  const [taskTitle, setTaskTitle] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const addItemHandler = () => {
-    if (title.trim() !== '') {
-      addItem(title.trim());
-      setTitle('');
+  const addTaskHandler = () => {
+    if (taskTitle.trim() !== '') {
+      addItem(taskTitle.trim());
+      setTaskTitle('');
     } else {
       setError('Title is required');
     }
   };
 
-  const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.currentTarget.value);
+  const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setTaskTitle(event.currentTarget.value);
   };
 
-  const addItemOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+  const addTaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
     setError(null);
     if (event.key === 'Enter') {
-      addItemHandler();
+      addTaskHandler();
     }
   };
+
   return (
     <div>
-      {/* <input
+      <input
         className={error ? 'error' : ''}
-        value={title}
-        onChange={changeItemHandler}
-        onKeyUp={addItemOnKeyUpHandler}
-      /> */}
-      <TextField
-        label="Enter a title"
-        variant={'outlined'}
-        // className={error ? 'error' : ''}
-        error={!!error}
-        helperText={error}
-        value={title}
-        size={'small'}
-        onChange={changeItemHandler}
-        onKeyUp={addItemOnKeyUpHandler}
+        value={taskTitle}
+        onChange={changeTaskTitleHandler}
+        onKeyUp={addTaskOnKeyUpHandler}
       />
-      {/* <Button title={'+'} onClick={addItemHandler} /> */}
-      <Button variant="contained" onClick={addItemHandler}>
-        +
-      </Button>{' '}
-      {/* {error && <div className={'error-message'}>{error}</div>} */}
+      <Button title={'+'} onClick={addTaskHandler} />
+      {error && <div className={'error-message'}>{error}</div>}
     </div>
   );
 };
+export default AddItemForm;
