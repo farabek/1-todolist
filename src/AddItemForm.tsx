@@ -1,45 +1,53 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { Button } from './Button';
+import {ChangeEvent, KeyboardEvent, useState} from "react";
+import TextField from '@mui/material/TextField';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import IconButton from "@mui/material/IconButton";
 
 type PropsType = {
-  addItem: (title: string) => void;
-};
+	addItem: (title: string) => void
+}
 
-const AddItemForm = ({ addItem }: PropsType) => {
-  const [taskTitle, setTaskTitle] = useState('');
-  const [error, setError] = useState<string | null>(null);
+export const AddItemForm = ({addItem}: PropsType) => {
 
-  const addTaskHandler = () => {
-    if (taskTitle.trim() !== '') {
-      addItem(taskTitle.trim());
-      setTaskTitle('');
-    } else {
-      setError('Title is required');
-    }
-  };
+	const [title, setTitle] = useState('')
+	const [error, setError] = useState<string | null>(null)
 
-  const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    setTaskTitle(event.currentTarget.value);
-  };
+	const addItemHandler = () => {
+		if (title.trim() !== '') {
+			addItem(title.trim())
+			setTitle('')
+		} else {
+			setError('Title is required')
+		}
+	}
 
-  const addTaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (event.key === 'Enter') {
-      addTaskHandler();
-    }
-  };
+	const changeItemHandler = (event: ChangeEvent<HTMLInputElement>) => {
+		setTitle(event.currentTarget.value)
+	}
 
-  return (
-    <div>
-      <input
-        className={error ? 'error' : ''}
-        value={taskTitle}
-        onChange={changeTaskTitleHandler}
-        onKeyUp={addTaskOnKeyUpHandler}
-      />
-      <Button title={'+'} onClick={addTaskHandler} />
-      {error && <div className={'error-message'}>{error}</div>}
-    </div>
-  );
-};
-export default AddItemForm;
+	const addItemOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+		setError(null)
+		if (event.key === 'Enter') {
+			addItemHandler()
+		}
+	}
+	return (
+		<div>
+			<TextField
+				label="Enter a title"
+				variant={'outlined'}
+				value={title}
+				size={'small'}
+				error={!!error}
+				helperText={error}
+				onChange={changeItemHandler}
+				onKeyUp={addItemOnKeyUpHandler}
+			/>
+			<IconButton onClick={addItemHandler} color={'primary'}>
+				<AddBoxIcon/>
+			</IconButton>
+		</div>
+	)
+}
+
+
