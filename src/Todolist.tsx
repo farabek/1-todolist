@@ -1,6 +1,4 @@
-//  Todolist.tsx
-
-import { FilterValuesType, TaskType } from './App';
+import { FilterValuesType, TaskType } from './app/App';
 import { ChangeEvent } from 'react';
 import { AddItemForm } from './AddItemForm';
 import { EditableSpan } from './EditableSpan';
@@ -123,5 +121,3 @@ export const Todolist = (props: PropsType) => {
     </div>
   );
 };
-
-//
