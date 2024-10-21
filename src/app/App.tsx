@@ -1,12 +1,11 @@
-import './App.css';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
-import { RootState } from './store';
-import { Header } from '../Header';
-import { Main } from '../Main';
-import { ThemeMode } from './app-reducer';
-import { getTheme } from '../common/theme/theme';
+import { ThemeProvider } from '@emotion/react';
+import { CssBaseline } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { Header } from '../common/components/Header/Header';
+import { getTheme } from '../common/theme/theme';
+import { ThemeMode } from './app-reducer';
+import { Main } from './Main';
+import { RootState } from './store';
 
 export type TaskType = {
   id: string;

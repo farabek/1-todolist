@@ -92,13 +92,13 @@
 
 ///////////////////////////////////////////
 
-import { AddItemForm } from './AddItemForm';
-import { TodolistType } from './app/App';
-import { FilterTasksButtons } from './FilterTasksButtons';
-import { TodolistTitle } from './TodolistTitle';
-import { Tasks } from './Tasks';
-import { addTaskAC } from './model/tasks-reducer';
 import { useDispatch } from 'react-redux';
+import { TodolistType } from '../../../../../app/App';
+import { AddItemForm } from '../../../../../common/components/AddItemForm/AddItemForm';
+import { addTaskAC } from '../../../model/tasks-reducer';
+import { FilterTasksButtons } from './FilterTasksButtons/FilterTasksButtons';
+import { Tasks } from './Tasks/Tasks';
+import { TodolistTitle } from './TodolistTitle/TodolistTitle';
 
 type PropsType = {
   todolist: TodolistType;

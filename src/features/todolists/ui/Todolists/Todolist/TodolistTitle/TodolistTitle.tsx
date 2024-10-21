@@ -1,10 +1,10 @@
-import { IconButton } from '@mui/material';
 import React from 'react';
-import { EditableSpan } from './EditableSpan';
-import { removeTodolistAC, changeTodolistTitleAC } from './model/todolists-reducer';
-import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TodolistType } from './app/App';
+import { IconButton } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { TodolistType } from '../../../../../../app/App';
+import { EditableSpan } from '../../../../../../common/components/EditableSpan/EditableSpan';
+import { removeTodolistAC, changeTodolistTitleAC } from '../../../../model/todolists-reducer';
 
 type Props = {
   todolist: TodolistType;

@@ -1,9 +1,9 @@
-import React from 'react';
 import { Container, Grid2 } from '@mui/material';
-import { AddItemForm } from './AddItemForm';
-import { Todolists } from './Todolists';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addTodolistAC } from './model/todolists-reducer';
+import { AddItemForm } from '../common/components/AddItemForm/AddItemForm';
+import { addTodolistAC } from '../features/todolists/model/todolists-reducer';
+import { Todolists } from '../features/todolists/ui/Todolists/Todolists';
 
 export const Main = () => {
   const dispatch = useDispatch();

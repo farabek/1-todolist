@@ -50,12 +50,12 @@
 
 ////////////////////////////////////////////////
 
-import { Grid2, Paper } from '@mui/material';
 import React from 'react';
+import { Grid2, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { TodolistType } from './app/App';
-import { RootState } from './app/store';
-import { Todolist } from './Todolist';
+import { TodolistType } from '../../../../app/App';
+import { RootState } from '../../../../app/store';
+import { Todolist } from './Todolist/Todolist';
 
 export const Todolists = () => {
   const todolists = useSelector<RootState, TodolistType[]>((state) => state.todolists);
