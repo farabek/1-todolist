@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react';
-import { useDispatch } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ListItem, Checkbox, IconButton } from '@mui/material';
 import { TodolistType, TaskType } from '../../../../../../../app/App';
@@ -10,6 +9,7 @@ import {
   changeTaskTitleAC,
   removeTaskAC,
 } from '../../../../../model/tasks-reducer';
+import { useAppDispatch } from '../../../../../../../common/hooks/useAppDispatch';
 
 type Props = {
   todolist: TodolistType;
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const Task = ({ todolist, task }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const removeTaskHandler = () => {
     dispatch(removeTaskAC({ taskId: task.id, todolistId: todolist.id }));

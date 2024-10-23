@@ -52,13 +52,15 @@
 
 import React from 'react';
 import { Grid2, Paper } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { TodolistType } from '../../../../app/App';
-import { RootState } from '../../../../app/store';
+// import { TodolistType } from '../../../../app/App';
+// import { RootState } from '../../../../app/store';
 import { Todolist } from './Todolist/Todolist';
+import { useAppSelector } from '../../../../common/hooks/useAppSelector';
+import { selectTodolists } from '../../model/todolistsSelectors';
 
 export const Todolists = () => {
-  const todolists = useSelector<RootState, TodolistType[]>((state) => state.todolists);
+  // const todolists = useAppSelector<RootState, TodolistType[]>((state) => state.todolists);
+  const todolists = useAppSelector(selectTodolists);
 
   return (
     <>

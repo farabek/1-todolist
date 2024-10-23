@@ -1,11 +1,13 @@
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { Header } from '../common/components/Header/Header';
 import { getTheme } from '../common/theme/theme';
-import { ThemeMode } from './app-reducer';
+// import { ThemeMode } from './app-reducer';
 import { Main } from './Main';
-import { RootState } from './store';
+// import { RootState } from './store';
+import { useAppSelector } from '../common/hooks/useAppSelector';
+import { selectThemeMode } from './appSelectors';
 
 export type TaskType = {
   id: string;
@@ -26,7 +28,9 @@ export type TasksStateType = {
 };
 
 export const App = () => {
-  const themeMode = useSelector<RootState, ThemeMode>((state) => state.app.themeMode);
+  // const themeMode = useSelector<RootState, ThemeMode>((state) => state.app.themeMode);
+  // const themeMode = useAppSelector((state) => state.app.themeMode);
+  const themeMode = useAppSelector(selectThemeMode);
 
   return (
     <ThemeProvider theme={getTheme(themeMode)}>

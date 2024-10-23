@@ -1,16 +1,19 @@
 import React from 'react';
 import { List } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { TodolistType, TasksStateType } from '../../../../../../app/App';
-import { RootState } from '../../../../../../app/store';
+// import { TodolistType, TasksStateType } from '../../../../../../app/App';
+import { TodolistType } from '../../../../../../app/App';
+// import { RootState } from '../../../../../../app/store';
 import { Task } from './Task/Task';
+import { useAppSelector } from '../../../../../../common/hooks/useAppSelector';
+import { selectTasks } from '../../../../model/tasksSelectors';
 
 type Props = {
   todolist: TodolistType;
 };
 
 export const Tasks = ({ todolist }: Props) => {
-  const tasks = useSelector<RootState, TasksStateType>((state) => state.tasks);
+  // const tasks = useAppSelector<RootState, TasksStateType>((state) => state.tasks);
+  const tasks = useAppSelector(selectTasks);
 
   ////////////
 
