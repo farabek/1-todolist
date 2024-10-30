@@ -1,5 +1,4 @@
 import Container from '@mui/material/Container';
-import React from 'react';
 import { AddItemForm } from '../common/components/AddItemForm/AddItemForm';
 import { useAppDispatch } from '../common/hooks/useAppDispatch';
 import { addTodolistAC } from '../features/todolists/model/todolists-reducer';
