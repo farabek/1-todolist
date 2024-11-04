@@ -1,12 +1,11 @@
-
 import Checkbox from '@mui/material/Checkbox';
 import axios from 'axios';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AddItemForm } from '../common/components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../common/components/EditableSpan/EditableSpan';
 
-const token = '76937f5f-4768-419a-900d-f97f3e4bfd1c';
-const apiKey = '674ef64a-80a2-4caf-9fa7-d677d328cc97';
+const token = '';
+const apiKey = '';
 
 const options = {
   headers: {
