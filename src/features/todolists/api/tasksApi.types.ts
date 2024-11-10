@@ -1,4 +1,5 @@
-import { FieldError } from './todolistsApi.types';
+import { TaskStatus, TaskPriority } from '../../../common/enums';
+import { FieldError } from '../../../common/types';
 
 export type GetTasksResponse = {
   error: string | null;
@@ -9,8 +10,8 @@ export type GetTasksResponse = {
 export type DomainTask = {
   description: string;
   title: string;
-  status: number;
-  priority: number;
+  status: TaskStatus;
+  priority: TaskPriority;
   startDate: string;
   deadline: string;
   id: string;
@@ -19,6 +20,16 @@ export type DomainTask = {
   addedDate: string;
 };
 
+export type UpdateTaskModel = {
+  title: string;
+  description: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+  startDate: string;
+  deadline: string;
+};
+
+//
 export type CreateTaskResponse = {
   resultCode: number;
   messages: string[];
@@ -35,15 +46,6 @@ export type DeleteTaskResponse = {
   data: {};
 };
 
-export type UpdateTaskModel = {
-  title: string;
-  description: string;
-  status: number;
-  priority: number;
-  startDate: string;
-  deadline: string;
-};
-
 export type UpdateTaskResponse = {
   resultCode: number;
   messages: string[];
@@ -52,3 +54,5 @@ export type UpdateTaskResponse = {
     item: DomainTask;
   };
 };
+
+//

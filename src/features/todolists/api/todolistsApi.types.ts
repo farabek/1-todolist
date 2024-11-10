@@ -1,34 +1,36 @@
-export type Todolist = {
-  id: string;
-  title: string;
-  addedDate: string;
-  order: number;
-};
+import { FieldError } from "../../../common/types"
 
-export type FieldError = {
-  error: string;
-  field: string;
-};
+export type Todolist = {
+  id: string
+  title: string
+  addedDate: string
+  order: number
+}
+
+// export type FieldError = {
+//   error: string
+//   field: string
+// }
 
 export type CreateTodolistResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
+  resultCode: number
+  messages: string[]
+  fieldsErrors: FieldError[]
   data: {
-    item: Todolist;
-  };
-};
+    item: Todolist
+  }
+}
 
 export type DeleteTodolistResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-  data: {};
-};
+  resultCode: number
+  messages: string[]
+  fieldsErrors: FieldError[]
+  data: {}
+}
 
 export type UpdateTodolistResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-  data: {};
-};
+  resultCode: number
+  messages: string[]
+  fieldsErrors: FieldError[]
+  data: {}
+}

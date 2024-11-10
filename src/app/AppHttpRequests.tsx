@@ -1,17 +1,13 @@
 import Checkbox from '@mui/material/Checkbox';
-import axios from 'axios';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AddItemForm } from '../common/components/AddItemForm/AddItemForm';
 import { EditableSpan } from '../common/components/EditableSpan/EditableSpan';
 import { Todolist } from '../features/todolists/api/todolistsApi.types';
-import {
-  CreateTaskResponse,
-  DeleteTaskResponse,
-  DomainTask,
-  UpdateTaskModel,
-  UpdateTaskResponse,
-} from '../features/todolists/api/tasksApi.types';
+import { DomainTask, UpdateTaskModel } from '../features/todolists/api/tasksApi.types';
 import { todolistsApi } from '../features/todolists/api/todolistsApi';
+import { tasksApi } from '../features/todolists/api/tasksApi';
+
+//
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([]);
@@ -23,66 +19,51 @@ export const AppHttpRequests = () => {
     todolistsApi.getTodolists().then((res) => {
       const todolists = res.data;
       setTodolists(todolists);
-      /*...*/
+
+      todolists.forEach((tl) => {
+        tasksApi.getTasks(tl.id).then((res) => {
+          setTasks((prevState) => ({ ...prevState, [tl.id]: res.data.items }));
+        });
+      });
     });
   }, []);
 
   const createTodolistHandler = (title: string) => {
     todolistsApi.createTodolist(title).then((res) => {
       const newTodolist = res.data.data.item;
-      // setTodolists([newTodolist, ...todolists]);
       setTodolists((prevState) => [newTodolist, ...prevState]);
     });
   };
 
   const removeTodolistHandler = (id: string) => {
-    todolistsApi.deleteTodolist(id).then((res) => {
-      // const newTodolists = todolists.filter((item) => item.id !== id);
-      // setTodolists(newTodolists);
+    todolistsApi.deleteTodolist(id).then(() => {
       setTodolists((prevState) => prevState.filter((tl) => tl.id !== id));
     });
   };
 
   const updateTodolistHandler = (id: string, title: string) => {
-    todolistsApi.updateTodolist({ id, title }).then((res) => {
-      // const newTodolists = todolists.map((item) => (item.id === id ? { ...item, title } : item));
-      // setTodolists(newTodolists);
+    todolistsApi.updateTodolist({ id, title }).then(() => {
       setTodolists((prevState) => prevState.map((tl) => (tl.id === id ? { ...tl, title } : tl)));
     });
   };
 
   const createTaskHandler = (title: string, todolistId: string) => {
-    axios
-      .post<CreateTaskResponse>(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
-        { title },
-        {
-          headers: {
-            Authorization: 'Bearer 76937f5f-4768-419a-900d-f97f3e4bfd1c',
-            'API-KEY': '674ef64a-80a2-4caf-9fa7-d677d328cc97',
-          },
-        },
-      )
-      .then((res) => {
-        const newTask = res.data.data.item;
-        setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] });
-      });
+    tasksApi.createTask({ todolistId, title }).then((res) => {
+      const newTask = res.data.data.item;
+      setTasks((prevState) => ({
+        ...prevState,
+        [todolistId]: [newTask, ...prevState[todolistId]],
+      }));
+    });
   };
 
   const removeTaskHandler = (taskId: string, todolistId: string) => {
-    axios
-      .delete<DeleteTaskResponse>(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`,
-        {
-          headers: {
-            Authorization: 'Bearer 76937f5f-4768-419a-900d-f97f3e4bfd1c',
-            'API-KEY': '674ef64a-80a2-4caf-9fa7-d677d328cc97',
-          },
-        },
-      )
-      .then((res) => {
-        setTasks({ ...tasks, [todolistId]: tasks[todolistId].filter((t) => t.id !== taskId) });
-      });
+    tasksApi.deleteTask({ todolistId, taskId }).then(() => {
+      setTasks((prevState) => ({
+        ...prevState,
+        [todolistId]: prevState[todolistId].filter((t) => t.id !== taskId),
+      }));
+    });
   };
 
   const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask) => {
@@ -97,18 +78,13 @@ export const AppHttpRequests = () => {
       startDate: task.startDate,
     };
 
-    axios
-      .put<UpdateTaskResponse>(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${task.todoListId}/tasks/${task.id}`,
+    tasksApi
+      .updateTask({
+        todolistId: task.todoListId,
+        taskId: task.id,
         model,
-        {
-          headers: {
-            Authorization: 'Bearer 76937f5f-4768-419a-900d-f97f3e4bfd1c',
-            'API-KEY': '674ef64a-80a2-4caf-9fa7-d677d328cc97',
-          },
-        },
-      )
-      .then((res) => {
+      })
+      .then(() => {
         const newTasks = tasks[task.todoListId].map((t) =>
           t.id === task.id ? { ...t, ...model } : t,
         );
@@ -126,22 +102,19 @@ export const AppHttpRequests = () => {
       startDate: task.startDate,
     };
 
-    axios
-      .put<UpdateTaskResponse>(
-        `https://social-network.samuraijs.com/api/1.1/todo-lists/${task.todoListId}/tasks/${task.id}`,
+    tasksApi
+      .updateTask({
+        todolistId: task.todoListId,
+        taskId: task.id,
         model,
-        {
-          headers: {
-            Authorization: 'Bearer 76937f5f-4768-419a-900d-f97f3e4bfd1c',
-            'API-KEY': '674ef64a-80a2-4caf-9fa7-d677d328cc97',
-          },
-        },
-      )
-      .then((res) => {
-        const newTasks = tasks[task.todoListId].map((t) =>
-          t.id === task.id ? { ...t, ...model } : t,
-        );
-        setTasks({ ...tasks, [task.todoListId]: newTasks });
+      })
+      .then(() => {
+        setTasks((prevTasks) => {
+          const newTasks = prevTasks[task.todoListId].map((t) =>
+            t.id === task.id ? { ...t, ...model } : t,
+          );
+          return { ...prevTasks, [task.todoListId]: newTasks };
+        });
       });
   };
 
@@ -171,6 +144,7 @@ export const AppHttpRequests = () => {
                       checked={task.status === 2}
                       onChange={(e) => changeTaskStatusHandler(e, task)}
                     />
+
                     <EditableSpan
                       value={task.title}
                       onChange={(title) => changeTaskTitleHandler(title, task)}
@@ -196,3 +170,5 @@ const todolist: React.CSSProperties = {
   justifyContent: 'space-between',
   flexDirection: 'column',
 };
+
+//
