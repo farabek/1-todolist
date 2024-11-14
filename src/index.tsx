@@ -1,16 +1,16 @@
 import ReactDOM from "react-dom/client"
 import "./index.css"
 import { Provider } from "react-redux"
-// import {App} from "./app/App";
-import { AppHttpRequests } from "./app/AppHttpRequests"
+import { App } from "./app/App"
+// import { AppHttpRequests } from "./app/AppHttpRequests"
 import { store } from "./app/store"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <Provider store={store}>
-    {/*<App/>*/}
-    <AppHttpRequests />
-  </Provider>
+    <App />
+    {/* <AppHttpRequests /> */}
+  </Provider>,
 )
 
 // If you want to start measuring performance in your app, pass a function

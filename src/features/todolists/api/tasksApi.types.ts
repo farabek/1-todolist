@@ -1,58 +1,29 @@
-import { TaskStatus, TaskPriority } from '../../../common/enums';
-import { FieldError } from '../../../common/types';
+import { TaskPriority, TaskStatus } from "common/enums"
 
 export type GetTasksResponse = {
-  error: string | null;
-  totalCount: number;
-  items: DomainTask[];
-};
+  error: string | null
+  totalCount: number
+  items: DomainTask[]
+}
 
 export type DomainTask = {
-  description: string;
-  title: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  startDate: string;
-  deadline: string;
-  id: string;
-  todoListId: string;
-  order: number;
-  addedDate: string;
-};
+  description: string
+  title: string
+  status: TaskStatus
+  priority: TaskPriority
+  startDate: string
+  deadline: string
+  id: string
+  todoListId: string
+  order: number
+  addedDate: string
+}
 
 export type UpdateTaskModel = {
-  title: string;
-  description: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  startDate: string;
-  deadline: string;
-};
-
-//
-export type CreateTaskResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-  data: {
-    item: DomainTask;
-  };
-};
-
-export type DeleteTaskResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-  data: {};
-};
-
-export type UpdateTaskResponse = {
-  resultCode: number;
-  messages: string[];
-  fieldsErrors: FieldError[];
-  data: {
-    item: DomainTask;
-  };
-};
-
-//
+  title: string
+  description: string
+  status: TaskStatus
+  priority: TaskPriority
+  startDate: string
+  deadline: string
+}

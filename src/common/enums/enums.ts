@@ -1,5 +1,3 @@
-// enums.ts
-
 export enum TaskStatus {
   New = 0,
   InProgress = 1,
@@ -14,5 +12,3 @@ export enum TaskPriority {
   Urgently = 3,
   Later = 4,
 }
-
-//
