@@ -6,6 +6,7 @@ import { changeTodolistTitleAC, removeTodolistAC, DomainTodolist } from "../../.
 import s from "./TodolistTitle.module.css"
 
 type Props = {
+  // todolist: TodolistType
   todolist: DomainTodolist
 }
 

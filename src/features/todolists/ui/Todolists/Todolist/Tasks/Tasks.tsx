@@ -4,6 +4,10 @@ import { selectTasks } from "../../../../model/tasksSelectors"
 // import { TodolistType } from "../../../../model/todolists-reducer"
 import { DomainTodolist } from "../../../../model/todolists-reducer"
 import { Task } from "./Task/Task"
+import { TaskStatus } from "common/enums"
+import { useAppDispatch } from "common/hooks"
+import { fetchTasksTC } from "features/todolists/model/tasks-reducer"
+import { useEffect } from "react"
 
 type Props = {
   // todolist: TodolistType
@@ -13,16 +17,24 @@ type Props = {
 export const Tasks = ({ todolist }: Props) => {
   const tasks = useAppSelector(selectTasks)
 
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchTasksTC(todolist.id))
+  }, [])
+
   const allTodolistTasks = tasks[todolist.id]
 
   let tasksForTodolist = allTodolistTasks
 
   if (todolist.filter === "active") {
-    tasksForTodolist = allTodolistTasks.filter((task) => !task.isDone)
+    // tasksForTodolist = allTodolistTasks.filter((task) => !task.isDone)
+    tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.New)
   }
 
   if (todolist.filter === "completed") {
-    tasksForTodolist = allTodolistTasks.filter((task) => task.isDone)
+    // tasksForTodolist = allTodolistTasks.filter((task) => task.isDone)
+    tasksForTodolist = allTodolistTasks.filter((task) => task.status === TaskStatus.Completed)
   }
 
   return (
@@ -33,11 +45,18 @@ export const Tasks = ({ todolist }: Props) => {
         <p>Тасок нет</p>
       ) : (
         <List>
-          {/* tasksForTodolist.map((task) => { */}
-          {/* {tasksForTodolist &&
-            tasksForTodolist.map((task) => { */}
-          {tasksForTodolist?.map((task) => {
+          {/* {tasksForTodolist.map((task) => {
             return <Task task={task} todolist={todolist} />
+          })} */}
+          {/* {tasksForTodolist &&
+            tasksForTodolist.map((task) => {
+              return <Task task={task} todolist={todolist} />
+            })} */}
+          {/* {tasksForTodolist?.map((task) => {
+            return <Task task={task} todolist={todolist} />
+          })} */}
+          {tasksForTodolist?.map((task) => {
+            return <Task key={task.id} task={task} todolist={todolist} />
           })}
         </List>
       )}
