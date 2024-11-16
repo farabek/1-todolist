@@ -1,9 +1,9 @@
-import { v1 } from "uuid"
+// import { v1 } from "uuid"
 import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
 import { Dispatch } from "redux"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask } from "../api/tasksApi.types"
-import { TaskPriority, TaskStatus } from "common/enums"
+// import { TaskPriority, TaskStatus } from "common/enums"
 
 // export type TaskType = {
 //   id: string
@@ -36,25 +36,29 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
       }
     }
 
+    // case "ADD-TASK": {
+    //   // const newTask: TaskType = {
+    //   //   title: action.payload.title,
+    //   //   isDone: false,
+    //   //   id: v1(),
+    //   // }
+    //   const newTask: DomainTask = {
+    //     title: action.payload.title,
+    //     todoListId: action.payload.todolistId,
+    //     startDate: "",
+    //     priority: TaskPriority.Low,
+    //     description: "",
+    //     deadline: "",
+    //     status: TaskStatus.New,
+    //     addedDate: "",
+    //     order: 0,
+    //     id: v1(),
+    //   }
+    //   return { ...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]] }
+    // }
     case "ADD-TASK": {
-      // const newTask: TaskType = {
-      //   title: action.payload.title,
-      //   isDone: false,
-      //   id: v1(),
-      // }
-      const newTask: DomainTask = {
-        title: action.payload.title,
-        todoListId: action.payload.todolistId,
-        startDate: "",
-        priority: TaskPriority.Low,
-        description: "",
-        deadline: "",
-        status: TaskStatus.New,
-        addedDate: "",
-        order: 0,
-        id: v1(),
-      }
-      return { ...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]] }
+      const newTask = action.payload.task
+      return { ...state, [newTask.todoListId]: [newTask, ...state[newTask.todoListId]] }
     }
 
     case "CHANGE_TASK_STATUS": {
@@ -107,11 +111,14 @@ export const removeTaskAC = (payload: { taskId: string; todolistId: string }) =>
   } as const
 }
 
-export const addTaskAC = (payload: { title: string; todolistId: string }) => {
-  return {
-    type: "ADD-TASK",
-    payload,
-  } as const
+// export const addTaskAC = (payload: { title: string; todolistId: string }) => {
+//   return {
+//     type: "ADD-TASK",
+//     payload,
+//   } as const
+// }
+export const addTaskAC = (payload: { task: DomainTask }) => {
+  return { type: "ADD-TASK", payload } as const
 }
 
 export const changeTaskStatusAC = (payload: { taskId: string; isDone: boolean; todolistId: string }) => {
@@ -144,6 +151,7 @@ export type ChangeTaskTitleActionType = ReturnType<typeof changeTaskTitleAC>
 export type SetTasksActionType = ReturnType<typeof setTasksAC>
 
 // Thunks
+
 // export const fetchTasksThunk = (dispatch: Dispatch) => {
 //   tasksApi.getTasks(todolistId).then((res) => {
 //     const tasks = res.data.items
@@ -154,6 +162,18 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   tasksApi.getTasks(todolistId).then((res) => {
     const tasks = res.data.items
     dispatch(setTasksAC({ todolistId, tasks }))
+  })
+}
+
+export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
+  tasksApi.deleteTask(arg).then((res) => {
+    dispatch(removeTaskAC(arg))
+  })
+}
+
+export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
+  tasksApi.createTask(arg).then((res) => {
+    dispatch(addTaskAC({ task: res.data.data.item }))
   })
 }
 
