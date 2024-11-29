@@ -5,7 +5,6 @@ import { changeTodolistFilterAC, FilterValuesType, DomainTodolist } from "../../
 import { filterButtonsContainerSx } from "./FilterTasksButtons.styles"
 
 type Props = {
-  // todolist: TodolistType
   todolist: DomainTodolist
 }
 

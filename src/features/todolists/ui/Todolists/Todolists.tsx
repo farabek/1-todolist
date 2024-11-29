@@ -1,28 +1,18 @@
 import Paper from "@mui/material/Paper"
 import { useAppDispatch, useAppSelector } from "common/hooks"
+import { fetchTodolistsTC } from "../../model/todolists-reducer"
 import { selectTodolists } from "../../model/todolistsSelectors"
 import { Todolist } from "./Todolist/Todolist"
 import { Grid2 } from "@mui/material"
 import { useEffect } from "react"
-import { todolistsApi } from "features/todolists/api/todolistsApi"
-import { setTodolistsAC } from "features/todolists/model/todolists-reducer"
 
 export const Todolists = () => {
   const todolists = useAppSelector(selectTodolists)
 
-  // useEffect(() => {
-  //   todolistsApi.getTodolists().then((res) => {
-  //     const todolists = res.data
-  //     console.log(todolists)
-  //   })
-  // }, [])
-
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    todolistsApi.getTodolists().then((res) => {
-      dispatch(setTodolistsAC(res.data))
-    })
+    dispatch(fetchTodolistsTC())
   }, [])
 
   return (

@@ -2,24 +2,24 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import { EditableSpan } from "common/components"
 import { useAppDispatch } from "common/hooks"
-import { changeTodolistTitleAC, removeTodolistAC, DomainTodolist } from "../../../../model/todolists-reducer"
+import { DomainTodolist, removeTodolistTC, updateTodolistTitleTC } from "../../../../model/todolists-reducer"
 import s from "./TodolistTitle.module.css"
 
 type Props = {
-  // todolist: TodolistType
   todolist: DomainTodolist
 }
 
 export const TodolistTitle = ({ todolist }: Props) => {
-  const { title, id } = todolist
+  // const { title, id } = todolist
+  const { title, id, disabled } = todolist
 
   const dispatch = useAppDispatch()
 
   const removeTodolistHandler = () => {
-    dispatch(removeTodolistAC(id))
+    dispatch(removeTodolistTC(id))
   }
   const updateTodolistHandler = (title: string) => {
-    dispatch(changeTodolistTitleAC({ id, title }))
+    dispatch(updateTodolistTitleTC({ id, title }))
   }
 
   return (
@@ -27,7 +27,8 @@ export const TodolistTitle = ({ todolist }: Props) => {
       <h3>
         <EditableSpan value={title} onChange={updateTodolistHandler} />
       </h3>
-      <IconButton onClick={removeTodolistHandler}>
+      {/* <IconButton onClick={removeTodolistHandler} disabled={true}> */}
+      <IconButton onClick={removeTodolistHandler} disabled={disabled}>
         <DeleteIcon />
       </IconButton>
     </div>
