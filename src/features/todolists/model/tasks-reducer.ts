@@ -1,10 +1,207 @@
+// import { Dispatch } from "redux"
+// import { RootState } from "../../../app/store"
+// import { tasksApi } from "../api/tasksApi"
+// import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
+// import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
+// import { setAppErrorAC, setAppStatusAC } from "app/app-reducer"
+// import { ResultCode } from "common/enums"
+
+// export type TasksStateType = {
+//   [key: string]: DomainTask[]
+// }
+
+// const initialState: TasksStateType = {}
+
+// export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
+//   switch (action.type) {
+//     case "SET-TASKS": {
+//       const stateCopy = { ...state }
+//       stateCopy[action.payload.todolistId] = action.payload.tasks
+//       return stateCopy
+//     }
+
+//     case "REMOVE-TASK": {
+//       return {
+//         ...state,
+//         [action.payload.todolistId]: state[action.payload.todolistId].filter((t) => t.id !== action.payload.taskId),
+//       }
+//     }
+
+//     case "ADD-TASK": {
+//       const newTask = action.payload.task
+//       return { ...state, [newTask.todoListId]: [newTask, ...state[newTask.todoListId]] }
+//     }
+
+//     case "UPDATE-TASK": {
+//       return {
+//         ...state,
+//         [action.payload.todolistId]: state[action.payload.todolistId].map((t) =>
+//           t.id === action.payload.taskId
+//             ? {
+//                 ...t,
+//                 ...action.payload.domainModel,
+//               }
+//             : t,
+//         ),
+//       }
+//     }
+
+//     case "ADD-TODOLIST":
+//       return { ...state, [action.payload.todolist.id]: [] }
+
+//     case "REMOVE-TODOLIST": {
+//       let copyState = { ...state }
+//       delete copyState[action.payload.id]
+//       return copyState
+//     }
+
+//     default:
+//       return state
+//   }
+// }
+
+// // Action creators
+// export const setTasksAC = (payload: { todolistId: string; tasks: DomainTask[] }) => {
+//   return {
+//     type: "SET-TASKS",
+//     payload,
+//   } as const
+// }
+
+// export const removeTaskAC = (payload: { taskId: string; todolistId: string }) => {
+//   return {
+//     type: "REMOVE-TASK",
+//     payload,
+//   } as const
+// }
+
+// export const addTaskAC = (payload: { task: DomainTask }) => {
+//   return { type: "ADD-TASK", payload } as const
+// }
+
+// export const updateTaskAC = (payload: { taskId: string; todolistId: string; domainModel: UpdateTaskDomainModel }) => {
+//   return {
+//     type: "UPDATE-TASK",
+//     payload,
+//   } as const
+// }
+
+// // Actions types
+// export type SetTasksActionType = ReturnType<typeof setTasksAC>
+// export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
+// export type AddTaskActionType = ReturnType<typeof addTaskAC>
+// export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
+
+// // Thunks
+// export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatusAC("loading"))
+//   tasksApi.getTasks(todolistId).then((res) => {
+//     dispatch(setAppStatusAC("succeeded"))
+//     const tasks = res.data.items
+//     dispatch(setTasksAC({ todolistId, tasks }))
+//   })
+// }
+
+// export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (dispatch: Dispatch) => {
+//   tasksApi.deleteTask(arg).then((res) => {
+//     dispatch(removeTaskAC(arg))
+//   })
+// }
+
+// // export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
+// //   dispatch(setAppStatusAC("loading"))
+// //   tasksApi.createTask(arg).then((res) => {
+// //     dispatch(setAppStatusAC("succeeded"))
+// //     dispatch(addTaskAC({ task: res.data.data.item }))
+// //   })
+// // }
+// export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
+//   dispatch(setAppStatusAC("loading"))
+//   tasksApi
+//     .createTask(arg)
+//     .then((res) => {
+//       // if (res.data.resultCode === 0) {
+//       if (res.data.resultCode === ResultCode.success) {
+//         dispatch(addTaskAC({ task: res.data.data.item }))
+//         dispatch(setAppStatusAC("succeeded"))
+//       } else {
+//         if (res.data.messages.length) {
+//           dispatch(setAppErrorAC(res.data.messages[0]))
+//         } else {
+//           dispatch(setAppErrorAC("Some error occurred"))
+//           dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+//         }
+//       }
+//     })
+//     .catch((error) => {
+//       dispatch(setAppErrorAC(error.message))
+//       dispatch(setAppStatusAC("failed"))
+//     })
+// }
+
+// export const updateTaskTC =
+//   (arg: { taskId: string; todolistId: string; domainModel: UpdateTaskDomainModel }) =>
+//   (dispatch: Dispatch, getState: () => RootState) => {
+//     const { taskId, todolistId, domainModel } = arg
+
+//     const allTasksFromState = getState().tasks
+//     const tasksForCurrentTodolist = allTasksFromState[todolistId]
+//     const task = tasksForCurrentTodolist.find((t) => t.id === taskId)
+
+//     if (task) {
+//       const model: UpdateTaskModel = {
+//         status: task.status,
+//         title: task.title,
+//         deadline: task.deadline,
+//         description: task.description,
+//         priority: task.priority,
+//         startDate: task.startDate,
+//         ...domainModel,
+//       }
+
+//       tasksApi
+//         .updateTask({ taskId, todolistId, model })
+//         .then((res) => {
+//           //     dispatch(updateTaskAC(arg))
+//           //   })
+//           // }
+//           if (res.data.resultCode === ResultCode.success) {
+//             dispatch(updateTaskAC(arg))
+//           } else {
+//             if (res.data.messages.length) {
+//               dispatch(setAppErrorAC(res.data.messages[0]))
+//             } else {
+//               dispatch(setAppErrorAC("Some error occurred"))
+//             }
+//             dispatch(setAppStatusAC("failed"))
+//           }
+//         })
+//         .catch((error) => {
+//           dispatch(setAppErrorAC(error.message))
+//           dispatch(setAppStatusAC("failed"))
+//         })
+//     }
+//   }
+
+// type ActionsType =
+//   | RemoveTaskActionType
+//   | AddTaskActionType
+//   | UpdateTaskActionType
+//   | AddTodolistActionType
+//   | RemoveTodolistActionType
+//   | SetTasksActionType
+
+/////////////////////////////////////////////////////
+
 import { Dispatch } from "redux"
 import { RootState } from "../../../app/store"
 import { tasksApi } from "../api/tasksApi"
 import { DomainTask, UpdateTaskDomainModel, UpdateTaskModel } from "../api/tasksApi.types"
 import { AddTodolistActionType, RemoveTodolistActionType } from "./todolists-reducer"
-import { setAppErrorAC, setAppStatusAC } from "app/app-reducer"
+// import { setAppErrorAC, setAppStatusAC } from "app/app-reducer"
+import { setAppStatusAC } from "app/app-reducer"
 import { ResultCode } from "common/enums"
+import { handleServerAppError, handleServerNetworkError } from "common/utils"
 
 export type TasksStateType = {
   [key: string]: DomainTask[]
@@ -117,20 +314,28 @@ export const removeTaskTC = (arg: { taskId: string; todolistId: string }) => (di
 // }
 export const addTaskTC = (arg: { title: string; todolistId: string }) => (dispatch: Dispatch) => {
   dispatch(setAppStatusAC("loading"))
-  tasksApi.createTask(arg).then((res) => {
-    // if (res.data.resultCode === 0) {
-    if (res.data.resultCode === ResultCode.success) {
-      dispatch(addTaskAC({ task: res.data.data.item }))
-      dispatch(setAppStatusAC("succeeded"))
-    } else {
-      if (res.data.messages.length) {
-        dispatch(setAppErrorAC(res.data.messages[0]))
+  tasksApi
+    .createTask(arg)
+    .then((res) => {
+      // if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResultCode.success) {
+        dispatch(addTaskAC({ task: res.data.data.item }))
+        dispatch(setAppStatusAC("succeeded"))
       } else {
-        dispatch(setAppErrorAC("Some error occurred"))
+        // if (res.data.messages.length) {
+        //   dispatch(setAppErrorAC(res.data.messages[0]))
+        // } else {
+        //   dispatch(setAppErrorAC("Some error occurred"))
+        //   dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+        // }
+        handleServerAppError(res.data, dispatch)
       }
-      dispatch(setAppStatusAC("failed"))
-    }
-  })
+    })
+    .catch((error) => {
+      // dispatch(setAppErrorAC(error.message))
+      // dispatch(setAppStatusAC("failed"))
+      handleServerNetworkError(error, dispatch)
+    })
 }
 
 export const updateTaskTC =
@@ -152,10 +357,35 @@ export const updateTaskTC =
         startDate: task.startDate,
         ...domainModel,
       }
+      dispatch(setAppStatusAC("loading"))
 
-      tasksApi.updateTask({ taskId, todolistId, model }).then((res) => {
-        dispatch(updateTaskAC(arg))
-      })
+      tasksApi
+        .updateTask({ taskId, todolistId, model })
+        .then((res) => {
+          //     dispatch(updateTaskAC(arg))
+          //   })
+          // }
+          if (res.data.resultCode === ResultCode.success) {
+            dispatch(setAppStatusAC("succeeded"))
+            dispatch(updateTaskAC(arg))
+          } else {
+            // if (res.data.messages.length) {
+            //   dispatch(setAppErrorAC(res.data.messages[0]))
+            // } else {
+            //   dispatch(setAppErrorAC("Some error occurred"))
+            // }
+            // dispatch(setAppStatusAC("failed"))
+            //
+            // dispatch(setAppStatusAC("failed"))
+            // dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : "Some error occurred"))
+            handleServerAppError(res.data, dispatch)
+          }
+        })
+        .catch((error) => {
+          // dispatch(setAppErrorAC(error.message))
+          // dispatch(setAppStatusAC("failed"))
+          handleServerNetworkError(error, dispatch)
+        })
     }
   }
 
